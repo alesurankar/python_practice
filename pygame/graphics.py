@@ -1,17 +1,18 @@
 import pygame
-from colors import Colors
-
 
 class Graphics:
+    wndWidth = 0
+    wndHeight = 0
+
     def __init__(self, window):
         self.window = window
-        self.screen = window.screen        
-        self.width = window.width
-        self.height = window.height
-        self.clock = window.clock
+        self.screen = window.screen    
+        self.clock = window.clock    
+        Graphics.wndWidth = window.width
+        Graphics.wndHeight = window.height
 
     def PutPixel(self, x, y, color):
-        if 0 <= x < self.width and 0 <= y < self.height:
+        if 0 <= x < Graphics.wndWidth and 0 <= y < Graphics.wndHeight:
             if hasattr(color, "r"):
                 self.screen.set_at((x, y), (color.r, color.g, color.b))
             else:

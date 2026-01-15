@@ -3,8 +3,7 @@ class Color:
         self.r = r
         self.g = g
         self.b = b
-
-    
+ 
 class Colors:
     Red   = Color(255, 0, 0)
     Green = Color(0, 255, 0)

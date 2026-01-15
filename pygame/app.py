@@ -1,13 +1,12 @@
-from colors import Colors
-
+from player import Player
+from enemy import Enemy
 
 class App:
     def __init__(self, gfx, kbd):
         self.gfx = gfx
         self.kbd = kbd
-        self.x = 100
-        self.y = 100
-        self.speed = 1
+        self.player = Player(20, 20)
+        self.enemy = Enemy(50, 50)
 
     def Go(self):
         self.gfx.BeginFrame()
@@ -16,18 +15,9 @@ class App:
         self.gfx.EndFrame()
 
     def UpdateFrame(self):
-        if self.kbd.KeyIsPressed("K_SPACE"):
-            self.speed = 3
-        else: self.speed = 1
-        if self.kbd.KeyIsPressed("K_w"):
-            self.y -= self.speed
-        if self.kbd.KeyIsPressed("K_a"):
-            self.x -= self.speed
-        if self.kbd.KeyIsPressed("K_s"):
-            self.y += self.speed
-        if self.kbd.KeyIsPressed("K_d"):
-            self.x += self.speed
-
+        self.player.Update(self.kbd)
+        self.enemy.Update()
 
     def ComposeFrame(self):
-        self.gfx.DrawRect(self.x, self.y, 10, 10, Colors.Red)
+        self.player.Draw(self.gfx)
+        self.enemy.Draw(self.gfx)
