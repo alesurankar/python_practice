@@ -4,7 +4,7 @@ from app import App
 
 wnd = Window(640, 480)
 gfx = Graphics(wnd)
-app = App(gfx)
+app = App(gfx, wnd.kbd)
 
 while wnd.ProcessMessage():
     app.Go()
