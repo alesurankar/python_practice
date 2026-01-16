@@ -1,4 +1,5 @@
 import pygame
+from inputMouse import Mouse
 from inputKeyboard import Keyboard
 
 class Window:
@@ -10,11 +11,13 @@ class Window:
         self.height = height
         self.clock = pygame.time.Clock()
         self.running = True
+        self.mouse = Mouse()
         self.kbd = Keyboard()
 
     def ProcessMessage(self) -> bool:
         events = pygame.event.get()
-        self.kbd.Update(events)
+        self.mouse.Update()
+        self.kbd.Update()
         for event in events:
             if event.type == pygame.QUIT:
                 self.running = False
