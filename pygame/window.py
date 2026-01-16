@@ -1,13 +1,13 @@
 import pygame
-from input_keyboard import Keyboard
+from inputKeyboard import Keyboard
 
 class Window:
     def __init__(self, width=200, height=200):
         pygame.init()
+        pygame.display.set_caption("My pygame Screen")
         self.screen = pygame.display.set_mode((width, height))
         self.width = width
         self.height = height
-        pygame.display.set_caption("My pygame Screen")
         self.clock = pygame.time.Clock()
         self.running = True
         self.kbd = Keyboard()

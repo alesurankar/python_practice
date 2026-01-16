@@ -1,11 +1,12 @@
 import pygame
+from colors import Colors
 
 class Graphics:
     wndWidth = 0
     wndHeight = 0
 
-    def __init__(self, window):
-        self.window = window
+    def __init__(self, window, FPS):
+        self.FPS = FPS
         self.screen = window.screen    
         self.clock = window.clock    
         Graphics.wndWidth = window.width
@@ -24,9 +25,9 @@ class Graphics:
                 self.PutPixel(ix, iy, color)
 
 
-    def BeginFrame(self, color=(0, 0, 0)):
+    def BeginFrame(self, color=Colors.DarkGray):
         self.screen.fill(color)
 
     def EndFrame(self):
         pygame.display.flip()
-        self.clock.tick(60)
+        self.clock.tick(self.FPS)

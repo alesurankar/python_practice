@@ -1,5 +1,4 @@
 from livingEntity import LivingEntity
-from graphics import Graphics
 from colors import Colors
 
 class Player(LivingEntity):
