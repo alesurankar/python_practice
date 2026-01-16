@@ -7,7 +7,7 @@ class Window:
         self.screen = pygame.display.set_mode((width, height))
         self.width = width
         self.height = height
-        pygame.display.set_caption("Screen")
+        pygame.display.set_caption("My pygame Screen")
         self.clock = pygame.time.Clock()
         self.running = True
         self.kbd = Keyboard()

@@ -2,7 +2,7 @@ from window import Window
 from graphics import Graphics
 from app import App
 
-wnd = Window(640, 480)
+wnd = Window(800, 600)
 gfx = Graphics(wnd)
 app = App(gfx, wnd.kbd)
 
