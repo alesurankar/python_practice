@@ -10,7 +10,7 @@ my_xLabel = 'Month'
 my_yLabel = 'Sunny Days'
 
 my_candlestick_df = pd.DataFrame({
-    "Date": pd.date_range("2025-01-01", periods=12, freq="M"),
+    "Date": pd.date_range("2025-01-01", periods=12, freq="ME"),
     "Open":  [7, 9, 11, 6, 15, 21, 17, 26, 18, 17, 13, 11],
     "Close": [9, 11, 6, 15, 21, 17, 26, 18, 17, 13, 11, 6],
     "High":  [12, 14, 14, 18, 24, 24, 29, 29, 21, 20, 16, 14],
