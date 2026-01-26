@@ -3,12 +3,11 @@ from tkinter import ttk, messagebox, filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from charts.graphs import DrawGraph
+from gui.navigation import MakeNavigationButtons
 
 
 def CreateGui(root):
-    # -----------------------------
-    # Plot area
-    # -----------------------------
+    # Plot frame
     plot_frame = ttk.Frame(root)
     plot_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -16,9 +15,7 @@ def CreateGui(root):
     canvas = FigureCanvasTkAgg(fig, master=plot_frame)
     canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-    # -----------------------------
-    # Graph functions
-    # -----------------------------
+    # Graph logic
     GRAPH_TYPES = [
         'plot',          # line plots
         'bar',           # vertical bars
@@ -33,17 +30,18 @@ def CreateGui(root):
         'pie',           # pie chart
         'candlestick',
     ]
+    current_graph_index = 0
+
     def ShowGraph(graphType):
         DrawGraph(fig, graphType)
         canvas.draw()
 
-    current_graph_index = 0
-    def ShowNextGraph():
+    def ShowNext():
         nonlocal current_graph_index
         current_graph_index = (current_graph_index + 1) % len(GRAPH_TYPES)
         ShowGraph(GRAPH_TYPES[current_graph_index])
 
-    def ShowPrevGraph():
+    def ShowPrev():
         nonlocal current_graph_index
         current_graph_index = (current_graph_index - 1) % len(GRAPH_TYPES)
         ShowGraph(GRAPH_TYPES[current_graph_index])
@@ -83,21 +81,13 @@ def CreateGui(root):
 
     help_menu.add_command(label="About", command=ShowAbout)
 
-    # -----------------------------
-    # Top buttons for navigation
-    # -----------------------------
+        
+    # Navigation buttons
     top_frame = ttk.Frame(root, padding=5)
-    top_frame.pack(side=tk.TOP, fill=tk.X)
+    top_frame.pack(side="top", fill="x")
+    MakeNavigationButtons(top_frame, ShowNext, ShowPrev)
 
-    next_button = ttk.Button(top_frame, text="Next", command=lambda: ShowNextGraph())
-    next_button.pack(side=tk.RIGHT, padx=5)
-    prev_button = ttk.Button(top_frame, text="Previous", command=lambda: ShowPrevGraph())
-    prev_button.pack(side=tk.RIGHT, padx=5)
-
-    # -----------------------------
-    # Show initial graph
-    # -----------------------------
+    # Initial graph
     ShowGraph('plot')
 
-    # Return figure and canvas in case app.py wants it
     return fig, canvas
