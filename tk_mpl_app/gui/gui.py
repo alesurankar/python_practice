@@ -2,10 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
-from charts.graphs import DrawGraph
+from charts.graphs import DrawGraph, GetGraphTypes
 from gui.navigation import MakeNavigationButtons
 from gui.menus import CreateMenus
 
+GRAPH_TYPES = GetGraphTypes()
 
 def CreateGui(root):
     # Plot frame
@@ -16,21 +17,7 @@ def CreateGui(root):
     canvas = FigureCanvasTkAgg(fig, master=plot_frame)
     canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-    # Graph logic
-    GRAPH_TYPES = [
-        'plot',          # line plots
-        'bar',           # vertical bars
-        'barh',          # horizontal bars
-        'scatter',       # points
-        'fill_between',  # area under curve
-        'step',          # step plot
-        'errorbar',      # line with error bars
-        'hist',          # histogram
-        'boxplot',       # box & whisker
-        'violinplot',    # violin plot
-        'pie',           # pie chart
-        'candlestick',
-    ]
+
     current_graph_index = 0
 
     def ShowGraph(graphType):

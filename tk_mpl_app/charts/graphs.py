@@ -1,6 +1,6 @@
 import mplfinance as mpf
 from data.data import Data
-from charts.graph_defaults import graph_defaults
+from charts.graph_defaults import GRAPH_DEFAULTS
 from charts.graph_utils import ClearGraph, SetLabels
 import charts.graph_types as gt
 
@@ -23,12 +23,15 @@ GRAPH_FUNCTIONS = {
     'candlestick': gt.DrawCandlestickGraph
 }
 
+def GetGraphTypes():
+    return list(GRAPH_FUNCTIONS.keys())
+
 def DrawGraph(fig, graphType='plot', **kwargs):
     """Draws a graph of type `graphType` on the given figure.
     kwargs can override defaults in graph_defaults.
     """
     ax = ClearGraph(fig)
-    options = graph_defaults.copy()
+    options = GRAPH_DEFAULTS.copy()
     options.update(kwargs)
 
     func = GRAPH_FUNCTIONS.get(graphType)

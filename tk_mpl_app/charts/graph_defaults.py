@@ -1,6 +1,6 @@
 from data.data import Data
 
-graph_defaults = {
+GRAPH_DEFAULTS = {
     # General
     'color': 'blue',
     'edgecolor': 'black',
