@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from gui import CreateGui
+from gui.gui import CreateGui
 
 
 def main():

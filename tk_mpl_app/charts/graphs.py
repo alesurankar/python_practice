@@ -1,5 +1,5 @@
 import mplfinance as mpf
-from data import Data
+from data.data import Data
 
 
 # -----------------------------

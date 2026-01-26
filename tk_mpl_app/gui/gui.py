@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
-from graphs import DrawGraph
+from charts.graphs import DrawGraph
 
 
 def CreateGui(root):
