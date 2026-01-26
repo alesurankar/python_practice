@@ -24,13 +24,13 @@ def CreateGui(root):
         'bar',           # vertical bars
         'barh',          # horizontal bars
         'scatter',       # points
+        'fill_between',  # area under curve
+        'step',          # step plot
+        'errorbar',      # line with error bars
         'hist',          # histogram
         'boxplot',       # box & whisker
         'violinplot',    # violin plot
         'pie',           # pie chart
-        'fill_between',  # area under curve
-        'step',          # step plot
-        'errorbar',      # line with error bars
         'candlestick',
     ]
     def ShowGraph(graphType):

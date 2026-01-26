@@ -17,129 +17,30 @@ def DrawGraph(fig, graphType='plot', **kwargs):
     options = graph_defaults.copy()
     options.update(kwargs)
 
-    # -----------------------------
-    # Graph type handling
-    # -----------------------------
     if graphType == 'plot':
-        ax.plot(
-            xData, yData,
-            color=options['color'],
-            linestyle=options['linestyle'],
-            linewidth=options['linewidth'],
-            marker=options['marker'],
-            markersize=options['markersize'],
-            markerfacecolor=options['markerfacecolor'],
-            markeredgecolor=options['markeredgecolor'],
-            alpha=options['alpha'],
-            label=options['label']
-        )
+        DrawLineGraph(ax, xData, yData, options)
     elif graphType == 'bar':
-        ax.bar(
-            xData, yData,
-            color=options['color'],
-            edgecolor=options['edgecolor'],
-            linewidth=options['linewidth'],
-            width=options['width'],
-            alpha=options['alpha'],
-            label=options['label'],
-            tick_label=options['tick_label']
-        )
+        DrawBarGraph(ax, xData, yData, options)
     elif graphType == 'barh':
-        ax.barh(
-            y=xData, width=yData,
-            color=options['color'],
-            edgecolor=options['edgecolor'],
-            linewidth=options['linewidth'],
-            height=options['width'],
-            alpha=options['alpha'],
-            label=options['label'],
-            tick_label=options['tick_label']
-        )
+        DrawBarhGraph(ax, xData, yData, options)
     elif graphType == 'scatter':
-        ax.scatter(
-            xData, yData,
-            color=options['color'],
-            marker=options['marker'],
-            s=options['markersize']**2,
-            edgecolors=options['markeredgecolor'],
-            alpha=options['alpha'],
-            label=options['label']
-        )
+        DrawScatterGraph(ax, xData, yData, options)
     elif graphType == 'fill_between':
-        ax.fill_between(
-            xData, yData,
-            color=options['color'],
-            alpha=options['alpha'],
-            label=options['label']
-        )
+        DrawFillBetweenGraph(ax, xData, yData, options)
     elif graphType == 'step':
-        ax.step(
-            xData, yData,
-            color=options['color'],
-            linewidth=options['linewidth'],
-            label=options['label']
-        )
+        DrawStepGraph(ax, xData, yData, options)
     elif graphType == 'errorbar':
-        ax.errorbar(
-            xData, yData,
-            yerr=options['yerr'],
-            xerr=options['xerr'],
-            fmt=options['fmt'],
-            color=options['color'],
-            linewidth=options['linewidth'],
-            markersize=options['markersize'],
-            markerfacecolor=options['markerfacecolor'],
-            markeredgecolor=options['markeredgecolor'],
-            alpha=options['alpha'],
-            label=options['label']
-        )
+        DrawErrorBarGraph(ax, xData, yData, options)
     elif graphType == 'hist':
-        ax.hist(
-            yData,       
-            bins=options['bins'],
-            color=options['color'],
-            edgecolor=options['edgecolor'],
-            alpha=options['alpha'],
-            label=options['label']
-        )
+        DrawHistGraph(ax, yData, options)
     elif graphType == 'boxplot':
-        ax.boxplot(
-            yData,
-            patch_artist=True,
-            boxprops=dict(facecolor=options['box_facecolor'], color=options['box_edgecolor']),
-            medianprops=dict(color=options['median_color']),
-            whiskerprops=dict(color=options['whisker_color']),
-            capprops=dict(color=options['cap_color']),
-            flierprops=dict(marker=options['flier_marker'], color=options['flier_color'], alpha=options['flier_alpha'])
-        )
-        ax.set_xticklabels([options['label']])
+        DrawBoxPlotGraph(ax, yData, options)
     elif graphType == 'violinplot':
-        ax.violinplot(
-            yData,
-            showmeans=options['violin_showmeans'],
-            showmedians=options['violin_showmedians'],
-            showextrema=options['violin_showextrema']
-        )
-        ax.set_xticks([1])
-        ax.set_xticklabels([options['label']])
+        DrawViolinPlotGraph(ax, yData, options)
     elif graphType == 'pie':
-        ax.pie(
-            yData,
-            labels=xData,
-            colors=options['colors'],
-            autopct=options['autopct'],
-            startangle=options['startangle'],
-            shadow=options['shadow']
-        )
+        DrawPieGraph(ax, yData, options)
     elif graphType == 'candlestick':
-        mpf.plot(
-            Data.candlestick_df,
-            type='candle',
-            ax=ax,
-            style='classic',
-            volume=False,
-            show_nontrading=False
-        )
+        DrawCandlestickGraph(ax, mpf)
 
     # -----------------------------
     # Average line
@@ -147,3 +48,136 @@ def DrawGraph(fig, graphType='plot', **kwargs):
     if Data.avg and graphType in {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}:
         ax.axhline(y=Data.avg_val, linestyle='--', color='green', label=Data.avg_label)
     SetLabels(ax, graphType)
+
+
+def DrawLineGraph(ax, xData, yData, options):
+    ax.plot(
+        xData, yData,
+        color=options['color'],
+        linestyle=options['linestyle'],
+        linewidth=options['linewidth'],
+        marker=options['marker'],
+        markersize=options['markersize'],
+        markerfacecolor=options['markerfacecolor'],
+        markeredgecolor=options['markeredgecolor'],
+        alpha=options['alpha'],
+        label=options['label']
+    )
+
+def DrawBarGraph(ax, xData, yData, options):
+    ax.bar(
+        xData, yData,
+        color=options['color'],
+        edgecolor=options['edgecolor'],
+        linewidth=options['linewidth'],
+        width=options['width'],
+        alpha=options['alpha'],
+        label=options['label'],
+        tick_label=options['tick_label']
+    )
+
+def DrawBarhGraph(ax, xData, yData, options):
+    ax.barh(
+        y=xData, width=yData,
+        color=options['color'],
+        edgecolor=options['edgecolor'],
+        linewidth=options['linewidth'],
+        height=options['width'],
+        alpha=options['alpha'],
+        label=options['label'],
+        tick_label=options['tick_label']
+    )
+
+def DrawScatterGraph(ax, xData, yData, options):
+    ax.scatter(
+        xData, yData,
+        color=options['color'],
+        marker=options['marker'],
+        s=options['markersize']**2,
+        edgecolors=options['markeredgecolor'],
+        alpha=options['alpha'],
+        label=options['label']
+    )
+
+def DrawFillBetweenGraph(ax, xData, yData, options):
+    ax.fill_between(
+        xData, yData,
+        color=options['color'],
+        alpha=options['alpha'],
+        label=options['label']
+    )
+
+def DrawStepGraph(ax, xData, yData, options):
+    ax.step(
+        xData, yData,
+        color=options['color'],
+        linewidth=options['linewidth'],
+        label=options['label']
+    )
+
+def DrawErrorBarGraph(ax, xData, yData, options):
+    ax.errorbar(
+        xData, yData,
+        yerr=options['yerr'],
+        xerr=options['xerr'],
+        fmt=options['fmt'],
+        color=options['color'],
+        linewidth=options['linewidth'],
+        markersize=options['markersize'],
+        markerfacecolor=options['markerfacecolor'],
+        markeredgecolor=options['markeredgecolor'],
+        alpha=options['alpha'],
+        label=options['label']
+    )
+
+def DrawHistGraph(ax, yData, options):
+    ax.hist(
+        yData,       
+        bins=options['bins'],
+        color=options['color'],
+        edgecolor=options['edgecolor'],
+        alpha=options['alpha'],
+        label=options['label']
+    )
+
+def DrawBoxPlotGraph(ax, yData, options):
+    ax.boxplot(
+        yData,
+        patch_artist=True,
+        boxprops=dict(facecolor=options['box_facecolor'], color=options['box_edgecolor']),
+        medianprops=dict(color=options['median_color']),
+        whiskerprops=dict(color=options['whisker_color']),
+        capprops=dict(color=options['cap_color']),
+        flierprops=dict(marker=options['flier_marker'], color=options['flier_color'], alpha=options['flier_alpha'])
+    )
+    ax.set_xticklabels([options['label']])
+
+def DrawViolinPlotGraph(ax, yData, options):
+    ax.violinplot(
+        yData,
+        showmeans=options['violin_showmeans'],
+        showmedians=options['violin_showmedians'],
+        showextrema=options['violin_showextrema']
+    )
+    ax.set_xticks([1])
+    ax.set_xticklabels([options['label']])
+
+def DrawPieGraph(ax, yData, options):
+    ax.pie(
+        yData,
+        labels=xData,
+        colors=options['colors'],
+        autopct=options['autopct'],
+        startangle=options['startangle'],
+        shadow=options['shadow']
+    )
+
+def DrawCandlestickGraph(ax, mpf):
+    mpf.plot(
+        Data.candlestick_df,
+        type='candle',
+        ax=ax,
+        style='classic',
+        volume=False,
+        show_nontrading=False
+    )
