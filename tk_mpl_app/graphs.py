@@ -1,5 +1,7 @@
 import mplfinance as mpf
 from data import Data
+
+
 # -----------------------------
 # Definitions
 # -----------------------------

@@ -1,6 +1,6 @@
 run comands:
 
-py -m venv venv                 # create venv
+py -m venv venv                     # create venv
 
 venv\Scripts\activate               # activate venv
 
