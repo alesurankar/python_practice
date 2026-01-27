@@ -6,6 +6,7 @@ from graphs.graphs import draw_graph, get_graph_types
 from gui.navigation import make_navigation_buttons
 from gui.menus import create_menus
 from data.data import Data
+from gui.actions import toggle_avg, next_graph, prev_graph
 
 
 def create_gui(root):
@@ -18,10 +19,11 @@ def create_gui(root):
 
     GRAPH_TYPES = get_graph_types()
     AVG_SUPPORTED = {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}
-    current_graph_index = 0
+
 
     def update_frame():  
-        show_graph(GRAPH_TYPES[current_graph_index])
+        index = context["current_graph_index"]
+        show_graph(GRAPH_TYPES[index])
         update_ui()
 
     def show_graph(graph_type=None, data=None):
@@ -37,19 +39,6 @@ def create_gui(root):
         else:
             avg_button.pack_forget()
 
-    def next_graph():
-        nonlocal current_graph_index
-        current_graph_index = (current_graph_index + 1) % len(GRAPH_TYPES)
-        update_frame()
-
-    def prev_graph():
-        nonlocal current_graph_index
-        current_graph_index = (current_graph_index - 1) % len(GRAPH_TYPES)
-        update_frame()
-
-    def toggle_avg():
-        context["data"].avg = not context["data"].avg
-        show_graph()
 
     default_csv = "data/candles.csv"
     default_meta = default_csv.replace(".csv", ".meta.json")
@@ -57,9 +46,11 @@ def create_gui(root):
         "root": root,
         "fig": fig,
         "canvas": canvas,
+        "current_graph_index": 0,
         "current_graph": GRAPH_TYPES[0],
         "data": Data(default_csv, default_meta),
-        "show_graph": show_graph
+        "show_graph": show_graph,
+        "update_frame": update_frame
     }
 
     # Menus
@@ -67,9 +58,9 @@ def create_gui(root):
         
     # Navigation buttons
     button_config = [
-        {"text": "Previous", "command": prev_graph, "side": "left"},
-        {"text": "Toggle Avg", "command": toggle_avg, "side": "left"},
-        {"text": "Next", "command": next_graph, "side": "right"},
+    {"text": "Previous", "command": lambda: prev_graph(context, GRAPH_TYPES), "side": "left"},
+    {"text": "Toggle Avg", "command": lambda: toggle_avg(context), "side": "left"},
+    {"text": "Next", "command": lambda: next_graph(context, GRAPH_TYPES), "side": "right"},
     ]
     buttons = make_navigation_buttons(root, button_config)
     avg_button = buttons["Toggle Avg"]
