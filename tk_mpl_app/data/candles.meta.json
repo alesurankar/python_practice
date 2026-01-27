@@ -3,6 +3,6 @@
   "label": "Sunny Days",
   "x_label": "Month",
   "y_label": "Sunny Days",
-  "avg": true,
+  "avg": false,
   "avg_label": "Average Sunny Days"
 }

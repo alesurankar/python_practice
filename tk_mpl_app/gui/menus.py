@@ -24,6 +24,7 @@ def _build_menu(menubar, label, items, context=None):
             )
     return menu
 
+
 # Internal Menu
 def _export_png(fig):
     file_path = filedialog.asksaveasfilename(
@@ -37,14 +38,17 @@ def _show_about(context=None):
     messagebox.showinfo("About", "Analysis App\nVersion 1.0")
 
 def _load_new_data(context):
-    file_path = filedialog.askopenfilename(
+    csv_path = filedialog.askopenfilename(
         title="Select CSV File",
         filetypes=[("CSV files", "*.csv")]
     )
-    if not file_path:
+    if not csv_path:
         return
-    context["data"] = Data(file_path)
-    context["show_graph"]()   
+    meta_path = csv_path.replace(".csv", ".meta.json")
+    if not os.path.exists(meta_path):
+        meta_path = None
+    context["data"] = Data(csv_path, meta_path)
+    context["show_graph"]()
 
 
 # Items

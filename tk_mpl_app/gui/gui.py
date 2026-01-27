@@ -36,6 +36,9 @@ def create_gui(root):
         nonlocal current_graph_index
         current_graph_index = (current_graph_index - 1) % len(GRAPH_TYPES)
         show_graph(GRAPH_TYPES[current_graph_index])
+        
+    default_csv = "data/candles.csv"
+    default_meta = default_csv.replace(".csv", ".meta.json")
 
     # Menus
     context = {
@@ -43,7 +46,7 @@ def create_gui(root):
         "fig": fig,
         "canvas": canvas,
         "current_graph": GRAPH_TYPES[0],
-        "data": Data("data/candles.csv"),
+        "data": Data(default_csv, default_meta),
         "show_graph": show_graph
     }
     create_menus(root, context)

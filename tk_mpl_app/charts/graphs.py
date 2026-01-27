@@ -24,8 +24,7 @@ def get_graph_types():
 
 def draw_graph(fig, graph_type='plot', data=None, **kwargs):
     if data is None:
-        from data.data import Data
-        data = Data("data/candles.csv")  # fallback default
+        raise ValueError("draw_graph called without data")
 
     ax = clear_graph(fig)
     options = GRAPH_DEFAULTS.copy()
