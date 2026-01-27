@@ -16,6 +16,41 @@ def create_gui(root):
     canvas = FigureCanvasTkAgg(fig, master=plot_frame)
     canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
+    GRAPH_TYPES = get_graph_types()
+    AVG_SUPPORTED = {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}
+    current_graph_index = 0
+
+    def update_frame():  
+        show_graph(GRAPH_TYPES[current_graph_index])
+        update_ui()
+
+    def show_graph(graph_type=None, data=None):
+        graph_type = graph_type or context["current_graph"]
+        data = data or context["data"]
+        context["current_graph"] = graph_type
+        draw_graph(fig, graph_type, data=data)
+        canvas.draw()
+
+    def update_ui():
+        if context["current_graph"] in AVG_SUPPORTED:
+            avg_button.pack(side="left", padx=5)
+        else:
+            avg_button.pack_forget()
+
+    def next_graph():
+        nonlocal current_graph_index
+        current_graph_index = (current_graph_index + 1) % len(GRAPH_TYPES)
+        update_frame()
+
+    def prev_graph():
+        nonlocal current_graph_index
+        current_graph_index = (current_graph_index - 1) % len(GRAPH_TYPES)
+        update_frame()
+
+    def toggle_avg():
+        context["data"].avg = not context["data"].avg
+        show_graph()
+
     default_csv = "data/candles.csv"
     default_meta = default_csv.replace(".csv", ".meta.json")
     context = {
@@ -26,39 +61,20 @@ def create_gui(root):
         "data": Data(default_csv, default_meta),
         "show_graph": show_graph
     }
-    GRAPH_TYPES = get_graph_types()
-    current_graph_index = 0
-
-    def show_graph(graph_type=None, data=None):
-        graph_type = graph_type or context["current_graph"]
-        data = data or context["data"]
-        context["current_graph"] = graph_type
-        draw_graph(context["fig"], graph_type, data=data)
-        context["canvas"].draw()
-
-    def show_next():
-        nonlocal current_graph_index
-        current_graph_index = (current_graph_index + 1) % len(GRAPH_TYPES)
-        show_graph(GRAPH_TYPES[current_graph_index])
-
-    def show_prev():
-        nonlocal current_graph_index
-        current_graph_index = (current_graph_index - 1) % len(GRAPH_TYPES)
-        show_graph(GRAPH_TYPES[current_graph_index])
-
-    def toggle_avg():
-        context["data"].avg = not context["data"].avg
-        show_graph()
 
     # Menus
     create_menus(root, context)
         
     # Navigation buttons
-    top_frame = ttk.Frame(root, padding=5)
-    top_frame.pack(side="top", fill="x")
-    make_navigation_buttons(top_frame, toggle_avg, show_next, show_prev)
+    button_config = [
+        {"text": "Previous", "command": prev_graph, "side": "left"},
+        {"text": "Toggle Avg", "command": toggle_avg, "side": "left"},
+        {"text": "Next", "command": next_graph, "side": "right"},
+    ]
+    buttons = make_navigation_buttons(root, button_config)
+    avg_button = buttons["Toggle Avg"]
 
     # Initial graph
-    show_graph(GRAPH_TYPES[0])
+    update_frame()
 
     return fig, canvas

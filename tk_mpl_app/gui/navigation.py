@@ -1,10 +1,14 @@
 from tkinter import ttk
 
-def make_navigation_buttons(top_frame, toggle_avg, show_next, show_prev):
-    avg_button = ttk.Button(top_frame, text="Toggle Avg", command=toggle_avg)
-    avg_button.pack(side="top", padx=5)
 
-    prev_button = ttk.Button(top_frame, text="Previous", command=show_prev)
-    prev_button.pack(side="left", padx=5)
-    next_button = ttk.Button(top_frame, text="Next", command=show_next)
-    next_button.pack(side="right", padx=5)
+def make_navigation_buttons(root, buttons_info):
+    top_frame = ttk.Frame(root, padding=5)
+    top_frame.pack(side="top", fill="x")
+
+    buttons = {}
+    for info in buttons_info:
+        btn = ttk.Button(top_frame, text=info['text'], command=info['command'])
+        btn.pack(side=info.get('side', 'left'), padx=5)
+        buttons[info['text']] = btn
+
+    return buttons
