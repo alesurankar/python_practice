@@ -1,4 +1,3 @@
-from data.data import Data
 
 def draw_line_graph(ax, x_data, y_data, options):
     ax.plot(

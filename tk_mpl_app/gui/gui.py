@@ -20,10 +20,12 @@ def create_gui(root):
     GRAPH_TYPES = get_graph_types()
     current_graph_index = 0
 
-    def show_graph(graph_type):
+    def show_graph(graph_type=None, data=None):
+        graph_type = graph_type or context["current_graph"]
+        data = data or context["data"]
         context["current_graph"] = graph_type
-        draw_graph(fig, graph_type)
-        canvas.draw()
+        draw_graph(context["fig"], graph_type, data=data)
+        context["canvas"].draw()
 
     def show_next():
         nonlocal current_graph_index
@@ -41,7 +43,8 @@ def create_gui(root):
         "fig": fig,
         "canvas": canvas,
         "current_graph": GRAPH_TYPES[0],
-        "data": Data("data/candles.csv")  # initial default data
+        "data": Data("data/candles.csv"),
+        "show_graph": show_graph
     }
     create_menus(root, context)
         
