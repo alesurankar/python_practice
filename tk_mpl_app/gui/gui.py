@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from charts.graphs import draw_graph, get_graph_types
 from gui.navigation import make_navigation_buttons
 from gui.menus import create_menus
+from data.data import Data
 
 
 def create_gui(root):
@@ -20,6 +21,7 @@ def create_gui(root):
     current_graph_index = 0
 
     def show_graph(graph_type):
+        context["current_graph"] = graph_type
         draw_graph(fig, graph_type)
         canvas.draw()
 
@@ -34,7 +36,14 @@ def create_gui(root):
         show_graph(GRAPH_TYPES[current_graph_index])
 
     # Menus
-    create_menus(root, fig)
+    context = {
+        "root": root,
+        "fig": fig,
+        "canvas": canvas,
+        "current_graph": GRAPH_TYPES[0],
+        "data": Data("data/candles.csv")  # initial default data
+    }
+    create_menus(root, context)
         
     # Navigation buttons
     top_frame = ttk.Frame(root, padding=5)

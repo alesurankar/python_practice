@@ -1,4 +1,3 @@
-from data.data import Data
 
 GRAPH_DEFAULTS = {
     # General
@@ -7,7 +6,7 @@ GRAPH_DEFAULTS = {
     'linewidth': 2,
     'linestyle': '-',
     'alpha': 0.8,
-    'label': Data.label,
+    'label': None,
     # Marker options (line/scatter/errorbar)
     'marker': 'o',
     'markersize': 6,
@@ -15,7 +14,7 @@ GRAPH_DEFAULTS = {
     'markeredgecolor': 'black',
     # Bar options
     'width': 0.8,
-    'tick_label': Data.x,
+    'tick_label': None,
     # Errorbar
     'yerr': None,
     'xerr': None,

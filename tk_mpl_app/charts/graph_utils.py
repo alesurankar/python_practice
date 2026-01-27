@@ -5,10 +5,10 @@ def clear_graph(fig):
     fig.clear()
     return fig.add_subplot(111)
 
-def set_labels(ax, graph_type):
+def set_labels(ax, graph_type, data):
     """Sets title and axis labels for the current graph."""
-    ax.set_title(f"{Data.title} ({graph_type})")
-    ax.set_xlabel(Data.x_label)
-    ax.set_ylabel(Data.y_label)
+    ax.set_title(f"{data.title} ({graph_type})")
+    ax.set_xlabel(data.x_label)
+    ax.set_ylabel(data.y_label)
     if graph_type in {'plot', 'bar', 'barh', 'scatter', 'fill_between', 'step', 'errorbar', 'hist', 'pie'}:
         ax.legend()

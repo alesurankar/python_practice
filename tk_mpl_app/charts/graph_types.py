@@ -122,9 +122,9 @@ def draw_pie_graph(ax, x_data, y_data, options):
         shadow=options['shadow']
     )
 
-def draw_candlestick_graph(ax, mpf):
+def draw_candlestick_graph(ax, mpf, data):
     mpf.plot(
-        Data.candlestick_df,
+        data.df,
         type='candle',
         ax=ax,
         style='classic',

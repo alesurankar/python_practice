@@ -1,5 +1,4 @@
 import mplfinance as mpf
-from data.data import Data
 from charts.graph_defaults import GRAPH_DEFAULTS
 from charts.graph_utils import clear_graph, set_labels
 import charts.graph_types as gt
@@ -23,28 +22,32 @@ GRAPH_FUNCTIONS = {
 def get_graph_types():
     return list(GRAPH_FUNCTIONS.keys())
 
-def draw_graph(fig, graph_type='plot', **kwargs):
-    """Draws a graph of type `graph_type` on the given figure.
-    kwargs can override defaults in graph_defaults.
-    """
+def draw_graph(fig, graph_type='plot', data=None, **kwargs):
+    if data is None:
+        from data.data import Data
+        data = Data("data/candles.csv")  # fallback default
+
     ax = clear_graph(fig)
     options = GRAPH_DEFAULTS.copy()
     options.update(kwargs)
+    # dynamic labels from current data
+    options['label'] = data.label
+    options['tick_label'] = data.x
 
     func = GRAPH_FUNCTIONS.get(graph_type)
     if func:
         if graph_type in {'plot', 'bar', 'barh', 'scatter', 'fill_between', 'step', 'errorbar', 'pie'}:
-            func(ax, Data.x, Data.y, options)
+            func(ax, data.x, data.y, options)
         elif graph_type in {'hist', 'boxplot', 'violinplot'}:
-            func(ax, Data.y, options)
+            func(ax, data.y, options)
         elif graph_type == 'candlestick':
-            func(ax, mpf)
+            func(ax, mpf, data)
     else:
         raise ValueError(f"Unknown graph_type: {graph_type}")
 
     # -----------------------------
     # Average line
     # -----------------------------
-    if Data.avg and graph_type in {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}:
-        ax.axhline(y=Data.avg_val, linestyle='--', color='green', label=Data.avg_label)
-    set_labels(ax, graph_type)
+    if data.avg and graph_type in {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}:
+        ax.axhline(y=data.avg_val, linestyle='--', color='green', label=data.avg_label)
+    set_labels(ax, graph_type, data)

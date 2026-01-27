@@ -3,37 +3,34 @@ import json
 import pandas as pd
 
 class Data:
-    # -----------------------------
-    # Load metadata from JSON
-    # -----------------------------
-    meta_path = "data/candles.meta.json"
-    if os.path.exists(meta_path):
-        with open(meta_path, "r") as f:
-            meta = json.load(f)
-    else:
-        # fallback defaults
-        meta = {}
+    def __init__(self, csv_path, meta_path=None):
 
-    title = meta.get("title", "Untitled")
-    label = meta.get("label", "Y")
-    x_label = meta.get("x_label", "X")
-    y_label = meta.get("y_label", "Y")
-    avg = meta.get("avg", False)
-    avg_label = meta.get("avg_label", "Average")
+        # Load metadata from JSON
+        if meta_path and os.path.exists(meta_path):
+            with open(meta_path, "r") as f:
+                meta = json.load(f)
+        else:
+            meta = {}
 
-    # -----------------------------
-    # Load candlestick data
-    # -----------------------------
-    candlestick_df = pd.read_csv(
-        "data/candles.csv",
-        index_col="Date",
-        parse_dates=True
-    )
+        self.title = meta.get("title", "Untitled")
+        self.label = meta.get("label", "Y")
+        self.x_label = meta.get("x_label", "X")
+        self.y_label = meta.get("y_label", "Y")
+        self.avg = meta.get("avg", False)
+        self.avg_label = meta.get("avg_label", "Average")
 
-    # -----------------------------
-    # Derived series (used by other charts)
-    # -----------------------------
-    x = candlestick_df.index.strftime("%b").tolist()   
-    y = candlestick_df["Close"].tolist()        
+        # Load candlestick data
+        self.df = pd.read_csv(
+            csv_path, 
+            index_col="Date", 
+            parse_dates=True
+        )
 
-    avg_val = sum(y) / len(y)
+
+        # -----------------------------
+        # Derived series (used by other charts)
+        # -----------------------------
+        self.x = self.df.index.strftime("%b").tolist()   
+        self.y = self.df["Close"].tolist()        
+
+        self.avg_val = sum(self.y) / len(self.y)
