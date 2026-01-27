@@ -29,7 +29,6 @@ def draw_graph(fig, graph_type='plot', data=None, **kwargs):
     ax = clear_graph(fig)
     options = GRAPH_DEFAULTS.copy()
     options.update(kwargs)
-    # dynamic labels from current data
     options['label'] = data.label
     options['tick_label'] = data.x
 
@@ -44,9 +43,7 @@ def draw_graph(fig, graph_type='plot', data=None, **kwargs):
     else:
         raise ValueError(f"Unknown graph_type: {graph_type}")
 
-    # -----------------------------
     # Average line
-    # -----------------------------
     if data.avg and graph_type in {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}:
         ax.axhline(y=data.avg_val, linestyle='--', color='green', label=data.avg_label)
     set_labels(ax, graph_type, data)

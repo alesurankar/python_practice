@@ -9,7 +9,6 @@ from data.data import Data
 
 
 def create_gui(root):
-    # Plot frame
     plot_frame = ttk.Frame(root)
     plot_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -17,6 +16,16 @@ def create_gui(root):
     canvas = FigureCanvasTkAgg(fig, master=plot_frame)
     canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
+    default_csv = "data/candles.csv"
+    default_meta = default_csv.replace(".csv", ".meta.json")
+    context = {
+        "root": root,
+        "fig": fig,
+        "canvas": canvas,
+        "current_graph": GRAPH_TYPES[0],
+        "data": Data(default_csv, default_meta),
+        "show_graph": show_graph
+    }
     GRAPH_TYPES = get_graph_types()
     current_graph_index = 0
 
@@ -36,25 +45,18 @@ def create_gui(root):
         nonlocal current_graph_index
         current_graph_index = (current_graph_index - 1) % len(GRAPH_TYPES)
         show_graph(GRAPH_TYPES[current_graph_index])
-        
-    default_csv = "data/candles.csv"
-    default_meta = default_csv.replace(".csv", ".meta.json")
+
+    def toggle_avg():
+        context["data"].avg = not context["data"].avg
+        show_graph()
 
     # Menus
-    context = {
-        "root": root,
-        "fig": fig,
-        "canvas": canvas,
-        "current_graph": GRAPH_TYPES[0],
-        "data": Data(default_csv, default_meta),
-        "show_graph": show_graph
-    }
     create_menus(root, context)
         
     # Navigation buttons
     top_frame = ttk.Frame(root, padding=5)
     top_frame.pack(side="top", fill="x")
-    make_navigation_buttons(top_frame, show_next, show_prev)
+    make_navigation_buttons(top_frame, toggle_avg, show_next, show_prev)
 
     # Initial graph
     show_graph(GRAPH_TYPES[0])
