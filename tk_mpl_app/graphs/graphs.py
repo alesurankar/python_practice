@@ -1,7 +1,7 @@
 import mplfinance as mpf
-from charts.graph_defaults import GRAPH_DEFAULTS
-from charts.graph_utils import clear_graph, set_labels
-import charts.graph_types as gt
+from graphs.graph_defaults import GRAPH_DEFAULTS
+from graphs.graph_utils import clear_graph, set_labels
+import graphs.graph_types as gt
 
 
 GRAPH_FUNCTIONS = {

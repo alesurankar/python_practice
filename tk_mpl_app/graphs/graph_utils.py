@@ -1,4 +1,3 @@
-from data.data import Data
 
 def clear_graph(fig):
     """Clears the figure and returns a new Axes object."""

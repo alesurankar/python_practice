@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
-from charts.graphs import draw_graph, get_graph_types
+from graphs.graphs import draw_graph, get_graph_types
 from gui.navigation import make_navigation_buttons
 from gui.menus import create_menus
 from data.data import Data
