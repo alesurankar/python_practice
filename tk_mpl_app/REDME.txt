@@ -13,4 +13,4 @@ Python: Select Interpreter
 Enter Interpreter path...
 ..../venv/Scripts/python.exe             
 
-py app.py                          # run the program
+py main.py                          # run the program
