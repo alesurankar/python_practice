@@ -10,7 +10,6 @@ class ModernButton(tk.Canvas):
         self.width = width
         self.height = height
         self.radius = radius
-        self.visible = True
 
         self.draw_button(THEME["btn_bg"])
 
@@ -35,7 +34,7 @@ class ModernButton(tk.Canvas):
         self.create_rectangle(0, r, w, h-r, fill=color, outline=color)
 
         # text
-        self.create_text(w/2, h/2, text=self.text, fill=THEME["btn_text"], font=("Segoe UI", 11, "bold"))
+        self.create_text(w/2, h/2, text=self.text, fill=THEME["text"], font=("Segoe UI", 11, "bold"))
 
     def on_hover(self, event):
         self.draw_button(THEME["btn_hover"])
@@ -52,11 +51,8 @@ class ModernButton(tk.Canvas):
             self.command()
 
     def show(self):
-        if not self.visible:
-            self.visible = True
-            self.place_configure()  # restore the last place position
+        self.place_forget()  # remove if already placed
+        self.place(x=self.winfo_x(), y=self.winfo_y()) 
 
     def hide(self):
-        if self.visible:
-            self.visible = False
-            self.place_forget()  # hides the Canvas entirely
+        self.place_forget()
