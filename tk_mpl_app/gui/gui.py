@@ -10,6 +10,16 @@ from gui.actions import toggle_avg, next_graph, prev_graph
 
 
 def create_gui(root):
+    # Navigation buttons
+    button_config = [
+        {"text": "Previous", "command": lambda: prev_graph(context, GRAPH_TYPES), "side": "left"},
+        {"text": "Toggle Avg", "command": lambda: toggle_avg(context), "side": "left"},
+        {"text": "Next", "command": lambda: next_graph(context, GRAPH_TYPES), "side": "right"},
+    ]
+    buttons = make_navigation_buttons(root, button_config)
+    avg_button = buttons["Toggle Avg"]
+
+    # Graph widget
     plot_frame = ttk.Frame(root)
     plot_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -20,6 +30,7 @@ def create_gui(root):
     GRAPH_TYPES = get_graph_types()
     AVG_SUPPORTED = {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}
 
+    
 
     def update_frame():  
         index = context["current_graph_index"]
@@ -55,15 +66,6 @@ def create_gui(root):
 
     # Menus
     create_menus(root, context)
-        
-    # Navigation buttons
-    button_config = [
-    {"text": "Previous", "command": lambda: prev_graph(context, GRAPH_TYPES), "side": "left"},
-    {"text": "Toggle Avg", "command": lambda: toggle_avg(context), "side": "left"},
-    {"text": "Next", "command": lambda: next_graph(context, GRAPH_TYPES), "side": "right"},
-    ]
-    buttons = make_navigation_buttons(root, button_config)
-    avg_button = buttons["Toggle Avg"]
 
     # Initial graph
     update_frame()

@@ -1,5 +1,6 @@
 import tkinter as tk
-from gui.components.button import THEME, ModernButton
+from gui.components.button import ModernButton
+from gui.components.theme import THEME
 
 
 def make_navigation_buttons(root, buttons_info):
