@@ -35,9 +35,9 @@ def create_gui(root):
 
     def update_ui():
         if context["current_graph"] in AVG_SUPPORTED:
-            avg_button.pack(side="left", padx=5)
+            avg_button.show()
         else:
-            avg_button.pack_forget()
+            avg_button.hide()
 
 
     default_csv = "data/candles.csv"

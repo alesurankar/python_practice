@@ -7,19 +7,18 @@ THEME = {
     "btn_hover": "#66ff99",
     "btn_press": "#2e7d32",
     "btn_text": "#ffffff",
-    "glow": "#00ffaa",
 }
 
 
 class ModernButton(tk.Canvas):
     def __init__(self, parent, text, command=None, width=120, height=40, radius=18):
         super().__init__(parent, width=width, height=height, bg=THEME["bg"], highlightthickness=0)
-
         self.command = command
         self.text = text
         self.width = width
         self.height = height
         self.radius = radius
+        self.visible = True
 
         self.draw_button(THEME["btn_bg"])
 
@@ -59,3 +58,13 @@ class ModernButton(tk.Canvas):
         self.draw_button(THEME["btn_hover"])
         if self.command:
             self.command()
+
+    def show(self):
+        if not self.visible:
+            self.visible = True
+            self.place_configure()  # restore the last place position
+
+    def hide(self):
+        if self.visible:
+            self.visible = False
+            self.place_forget()  # hides the Canvas entirely
