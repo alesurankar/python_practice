@@ -5,6 +5,12 @@ from graphs.graphs import draw_graph, get_graph_types
 from data.data import Data
 from gui.components.theme import THEME
 
+GRAPH_THEME = {
+    'facecolor': THEME['bg'],
+    'textcolor': THEME['text'],
+    'tick_color': THEME['text'],
+    'legend_text': THEME['text']
+}
 
 AVG_SUPPORTED = {'plot', 'bar', 'barh', 'scatter', 'step', 'errorbar'}
 
@@ -28,6 +34,8 @@ class GraphWidget(tk.Frame):
         self.context["data"] = Data(default_csv, default_meta)
         self.context["current_graph_index"] = 0
         self.context["current_graph"] = self.GRAPH_TYPES[0]
+
+        # Put figure and canvas into context
         self.context["fig"] = self.fig
         self.context["canvas"] = self.canvas
         self.context["show_graph"] = self.show_graph
@@ -35,6 +43,18 @@ class GraphWidget(tk.Frame):
 
         # Initial draw
         self.update_frame()
+
+    def apply_theme(self):
+        for ax in self.fig.get_axes():
+            ax.set_facecolor(GRAPH_THEME['facecolor'])
+            ax.title.set_color(GRAPH_THEME['textcolor'])
+            ax.xaxis.label.set_color(GRAPH_THEME['textcolor'])
+            ax.yaxis.label.set_color(GRAPH_THEME['textcolor'])
+            ax.tick_params(colors=GRAPH_THEME['tick_color'])
+            legend = ax.get_legend()
+            if legend:
+                for text in legend.get_texts():
+                    text.set_color(GRAPH_THEME['legend_text'])
 
     def update_frame(self):
         index = self.context["current_graph_index"]
@@ -46,6 +66,7 @@ class GraphWidget(tk.Frame):
         data = data or self.context["data"]
         self.context["current_graph"] = graph_type
         draw_graph(self.fig, graph_type, data=data)
+        self.apply_theme()
         self.canvas.draw()
 
     def update_ui(self):
