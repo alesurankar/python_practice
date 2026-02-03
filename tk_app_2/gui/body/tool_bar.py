@@ -7,6 +7,7 @@ class ToolBar(tk.Frame):
         super().__init__(root)
         self.state = state
         self.theme = state.theme
+        self.active_btn = None
         
         self.tool_bar = Bar(self, self.state, 50, 0, self.theme.get("tool_bg"))
         self.tool_bar.pack(side="left", fill="y")
@@ -16,39 +17,56 @@ class ToolBar(tk.Frame):
     def _build_ui(self):
         c = self.tool_bar.canvas
 
-        size = 36
-        pad = 8
+        self.btn_frame = tk.Frame(c, bg=self.theme.get("tool_bg"))
+        c.create_window((0, 0), window=self.btn_frame, anchor="nw")
 
-        def make_btn(text):
-            btn = tk.Button(
-                c,
-                text=text,
-                bg=self.theme.get("tool_bg"),
-                fg="gray",
-                bd=0,
-                relief="flat",
-                activebackground=self.theme.get("tool_bg"),
-                width=2,
-                height=1,
-            )
+        buttons = [
+            ("📁", "Explorer"),
+            ("🔍", "Search"),
+            ("⚙️", "Settings"),
+        ]
 
-            def on_enter(e):
-                btn.config(fg="white")
-                btn.config(cursor="hand2")
+        for icon, name in buttons:
+            self._add_button(icon, name)
 
-            def on_leave(e):
-                btn.config(fg="gray")
-                btn.config(cursor="")
+        self.btn_frame.update_idletasks()
+        c.config(scrollregion=c.bbox("all"))
 
-            btn.bind("<Enter>", on_enter)
-            btn.bind("<Leave>", on_leave)
+    def _add_button(self, icon, name):
+        btn = tk.Label(
+            self.btn_frame,
+            text=icon,
+            font=("Segoe UI Emoji", 16),
+            bg=self.theme.get("tool_bg"),
+            fg=self.theme.get("tool_bar_text"),
+            padx=10,
+            pady=8,
+            cursor="hand2",
+        )
+        btn.pack(fill="x")
 
-            return btn
+        # hover effect
+        btn.bind("<Enter>", lambda e: btn.config(fg=self.theme.get("tool_bar_text_hover")))
+        btn.bind("<Leave>", lambda e: self._deactivate(btn))
+        btn.bind("<Button-1>", lambda e: self._activate(btn))
 
-        self.btn1 = make_btn("Abcde")
-        self.btn2 = make_btn("B")
-        self.btn3 = make_btn("C")
+        btn.tooltip = name 
 
-        c.create_window(25, pad + size * 0 + pad * 0, window=self.btn1, anchor="n")
-        c.create_window(25, pad + size * 1 + pad * 1, window=self.btn2, anchor="n")
-        c.create_window(25, pad + size * 2 + pad * 2, window=self.btn3, anchor="n")
+    def _activate(self, btn):
+        if self.active_btn == btn:
+            # If clicking the active button, deactivate it
+            btn.config(fg=self.theme.get("tool_bar_text"), bg=self.theme.get("tool_bg"))
+            self.active_btn = None
+            return
+
+        # Deactivate previous active button
+        if self.active_btn:
+            self.active_btn.config(fg=self.theme.get("tool_bar_text"), bg=self.theme.get("tool_bg"))
+
+        # Activate this one
+        btn.config(fg=self.theme.get("tool_bar_text_hover"), bg=self.theme.get("tool_expand_bg"))
+        self.active_btn = btn
+
+    def _deactivate(self, btn):
+        if btn != self.active_btn:
+            btn.config(fg=self.theme.get("tool_bar_text"))
