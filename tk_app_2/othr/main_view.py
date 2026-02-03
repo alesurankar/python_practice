@@ -1,6 +1,6 @@
 import tkinter as tk
-from gui.matplotlib_widget import MatplotlibWidget
-from gui.pygame_widget import PygameWidget
+from othr.matplotlib_widget import MatplotlibWidget
+from othr.pygame_widget import PygameWidget
 
 
 class MainView(tk.Frame):
