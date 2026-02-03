@@ -3,9 +3,10 @@ from othr.bar import Bar
 
 
 class ToolBar(tk.Frame):
-    def __init__(self, root, state):
+    def __init__(self, root, state, layout=None):
         super().__init__(root)
         self.state = state
+        self.layout = layout
         self.theme = state.theme
         self.active_btn = None
         
@@ -55,8 +56,12 @@ class ToolBar(tk.Frame):
     def _activate(self, btn):
         if self.active_btn == btn:
             # If clicking the active button, deactivate it
-            btn.config(fg=self.theme.get("tool_bar_text"), bg=self.theme.get("tool_bg"))
+            if self.layout.state.show_tool_expand.get():
+                self.layout.hide_expand()  # hide explicitly
+            else:
+                self.layout.show_expand()  # show explicitly
             self.active_btn = None
+            btn.config(fg=self.theme.get("tool_bar_text"), bg=self.theme.get("tool_bg"))
             return
 
         # Deactivate previous active button
@@ -66,7 +71,10 @@ class ToolBar(tk.Frame):
         # Activate this one
         btn.config(fg=self.theme.get("tool_bar_text_hover"), bg=self.theme.get("tool_expand_bg"))
         self.active_btn = btn
+        # optionally show toolbar if you want
+        self.layout.show_expand()
 
     def _deactivate(self, btn):
         if btn != self.active_btn:
             btn.config(fg=self.theme.get("tool_bar_text"))
+            self.layout.hide_expand()

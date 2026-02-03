@@ -20,19 +20,16 @@ class Layout(tk.PanedWindow):
         self.main_view = MainView(self, self.state)
         self.add(self.main_view)
 
-        root.bind_all("e", self.toggle_expand)
-        
-    def toggle_expand(self, event=None):
-        if self.state.show_tool_expand.get():
-            # remember current width
-            self.last_expand_width = self.sash_coord(0)[0]
-            # Collapse by setting pane width to 0
-            self.paneconfigure(self.tool_expand, minsize=0)
-            self.sash_place(0, 0, 0)
-            self.state.show_tool_expand.set(False)
-        else:
-            # Expand again
+    def show_expand(self):
+        if not self.state.show_tool_expand.get():
             width = max(self.last_expand_width, self.DEFAULT_WIDTH)
             self.paneconfigure(self.tool_expand, minsize=60)
             self.sash_place(0, width, 0)
             self.state.show_tool_expand.set(True)
+
+    def hide_expand(self):
+        if self.state.show_tool_expand.get():
+            self.last_expand_width = self.sash_coord(0)[0]
+            self.paneconfigure(self.tool_expand, minsize=0)
+            self.sash_place(0, 0, 0)
+            self.state.show_tool_expand.set(False)

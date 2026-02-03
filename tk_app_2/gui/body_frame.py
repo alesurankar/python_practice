@@ -10,11 +10,8 @@ class BodyFrame(tk.Frame):
         self.theme = state.theme
         self.configure(bg=self.theme["body_bg"])
 
-        self.tool_bar = ToolBar(self, self.state)
-        self.tool_bar.pack(side="left", fill="y")
-        #self.add(self.left_side)
-
         self.layout = Layout(self, self.state)
         self.layout.pack(side="right", fill="both", expand=True)
-        #self.add(self.right_side)
         
+        self.tool_bar = ToolBar(self, self.state, layout=self.layout)
+        self.tool_bar.pack(side="left", fill="y")
